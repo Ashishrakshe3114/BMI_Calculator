@@ -1,31 +1,32 @@
 import streamlit as st
 
-# 🎯 App title
+# 🎯 App configuration
 st.set_page_config(page_title="BMI Calculator", page_icon="💪", layout="centered")
 
 st.title("💪 BMI Calculator")
-st.write("Calculate your Body Mass Index (BMI) easily!")
+st.write("Easily calculate your Body Mass Index (BMI) using your height (in cm) and weight (in kg).")
 
-# 🧍 Input fields
+# 🧍 User input
 st.subheader("Enter your details:")
 
-# Use two columns for better layout
 col1, col2 = st.columns(2)
 
 with col1:
     weight = st.number_input("Weight (in kilograms)", min_value=0.0, format="%.2f")
 
 with col2:
-    height = st.number_input("Height (in meters)", min_value=0.0, format="%.2f")
+    height_cm = st.number_input("Height (in centimeters)", min_value=0.0, format="%.2f")
 
-# 🧮 Calculate BMI
+# 🧮 BMI Calculation
 if st.button("Calculate BMI"):
-    if height > 0 and weight > 0:
-        bmi = weight / (height ** 2)
+    if height_cm > 0 and weight > 0:
+        # Convert cm to meters
+        height_m = height_cm / 100
+        bmi = weight / (height_m ** 2)
 
         st.success(f"✅ Your BMI is: **{bmi:.2f}**")
 
-        # Health category based on BMI
+        # BMI category
         if bmi < 18.5:
             st.warning("You are **Underweight** 😟")
         elif 18.5 <= bmi < 24.9:
@@ -34,12 +35,11 @@ if st.button("Calculate BMI"):
             st.warning("You are **Overweight** 😐")
         else:
             st.error("You are **Obese** 😞")
-
     else:
         st.error("Please enter valid positive values for height and weight.")
 
-# ℹ️ Extra info
+# ℹ️ Info
 st.write("---")
-st.caption("BMI = weight (kg) / [height (m)]²")
+st.caption("Formula: BMI = weight (kg) / [height (m)]²")
 st.caption("Healthy BMI range: 18.5 - 24.9")
 
